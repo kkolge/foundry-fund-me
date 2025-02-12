@@ -25,12 +25,14 @@ snapshot :; forge snapshot
 
 format :; forge fmt
 
-anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
-
-deploy:
-	@forge script script/DeployFundMe.s.sol:DeployFundMe $(NETWORK_ARGS)
+anvil :; anvil --host 172.24.194.134 -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1 
+#--host 172.24.194.134
 
 NETWORK_ARGS := --rpc-url http://172.24.194.134:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+deploy:
+	@forge script $(NETWORK_ARGS) script/DeployFundMe.s.sol:DeployFundMe 
+
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account $(ACCOUNT) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
